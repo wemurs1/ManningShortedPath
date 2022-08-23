@@ -71,7 +71,7 @@ namespace NetworkClasses
                 var linksString = ReadNextLine(reader);
                 if (linksString != null) links = int.Parse(linksString);
 
-                for (int i = 0; i < nodes - 1; i++)
+                for (int i = 0; i < nodes; i++)
                 {
                     string[] nodeEntryArray = new string[0];
                     var nodeEntryString = ReadNextLine(reader);
@@ -83,7 +83,7 @@ namespace NetworkClasses
                     }
                 }
 
-                for (int i = 0; i < links - 1; i++)
+                for (int i = 0; i < links; i++)
                 {
                     string[] linkEntryArray = new string[0];
                     var linkEntryString = ReadNextLine(reader);
@@ -96,7 +96,7 @@ namespace NetworkClasses
                         Link? link = null;
                         if (nodeIndex <= Nodes.Count + 1) fromNode = Nodes[nodeIndex];
                         nodeIndex = int.Parse(linkEntryArray[1]);
-                        if (nodeIndex <= Nodes.Count + 1) toNode = Nodes[nodeIndex];
+                        if (nodeIndex <= Nodes.Count) toNode = Nodes[nodeIndex];
                         if (fromNode != null && toNode != null ) link = new Link(this,fromNode, toNode, int.Parse( linkEntryArray[2]));
                     }
                 }

@@ -6,7 +6,32 @@
         xmlns:local="clr-namespace:NetworkClasses"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Width" Value="70"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="3"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="BorderBrush" Value="Black"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Margin" Value="3"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+        </Grid.Resources>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Name="net1Button" Content="Network 1" Click="net1Button_Click"/>
+            <Button Name="net2Button" Content="Network 2" Click="net2Button_Click"/>
+            <Button Name="net3Button" Content="Network 3" Click="net3Button_Click"/>
+        </StackPanel>
+
+        <TextBox Name="netTextBox" Grid.Row="1" VerticalScrollBarVisibility="Auto"/>
+        <Label Name="statusLabel" Grid.Row="2" Content=" " HorizontalAlignment="Center"/>
     </Grid>
 </Window>
