@@ -29,5 +29,10 @@ namespace NetworkClasses
         {
             return $"[{Text}]";
         }
+
+        public void AddLink(Link link)
+        {
+            Links.Add(link);
+        }
     }
 }
