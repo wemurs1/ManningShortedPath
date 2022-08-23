@@ -6,32 +6,24 @@
         xmlns:local="clr-namespace:NetworkClasses"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="Width" Value="70"/>
-                <Setter Property="Height" Value="30"/>
-                <Setter Property="Margin" Value="3"/>
-            </Style>
-            <Style TargetType="TextBox">
-                <Setter Property="BorderBrush" Value="Black"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Margin" Value="3"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-            </Style>
-        </Grid.Resources>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Name="net1Button" Content="Network 1" Click="net1Button_Click"/>
-            <Button Name="net2Button" Content="Network 2" Click="net2Button_Click"/>
-            <Button Name="net3Button" Content="Network 3" Click="net3Button_Click"/>
-        </StackPanel>
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" CanExecute="OpenCommand_CanExecute" Executed="OpenCommand_Executed" />
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Command="Open" />
+                <Separator />
+                <MenuItem Header="_Exit" Click="ExitCommand_Executed" />
+            </MenuItem>
+        </Menu>
 
-        <TextBox Name="netTextBox" Grid.Row="1" VerticalScrollBarVisibility="Auto"/>
-        <Label Name="statusLabel" Grid.Row="2" Content=" " HorizontalAlignment="Center"/>
-    </Grid>
+        <Border BorderBrush="Black" BorderThickness="1" Margin="3">
+            <ScrollViewer
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+                <Canvas Name="mainCanvas"/>
+            </ScrollViewer>
+        </Border>
+    </DockPanel>
 </Window>
