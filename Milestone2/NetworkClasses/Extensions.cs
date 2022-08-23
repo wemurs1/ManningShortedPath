@@ -10,7 +10,7 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace draw_network
+namespace NetworkClasses
 {
     public static class Extensions
     {

@@ -50,6 +50,7 @@ namespace NetworkClasses
                 if (result == true)
                 {
                     // Open the network.
+                    MyNetwork = new Network(dialog.FileName);
 
                 }
             }
@@ -67,10 +68,10 @@ namespace NetworkClasses
         private void DrawNetwork()
         {
             // Remove any previous drawing.
-            
+            mainCanvas.Children.Clear();
 
             // Make the network draw itself.
-
+            MyNetwork.Draw(mainCanvas);
         }
 
         private void ExitCommand_Executed(object sender, RoutedEventArgs e)

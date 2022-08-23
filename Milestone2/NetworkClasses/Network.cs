@@ -5,13 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using Point = System.Windows.Point;
 
 namespace NetworkClasses
 {
     public class Network
     {
         public List<Node> Nodes { get; set; }
-        public List<Link> Links { get; set; }
+        public List<Link> Links { get; set; } 
+        private const int CANVAS_EXTRA = 10;
 
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -19,6 +23,13 @@ namespace NetworkClasses
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             Clear();
+        }
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public Network(string filename): base()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        {
+            ReadFromFile(filename);
         }
 
         public void Clear()
@@ -127,6 +138,48 @@ namespace NetworkClasses
         {
             var fileContent = File.ReadAllText(filename);
             if (fileContent != null) Deserialize(fileContent);
+        }
+
+        public void Draw(Canvas mainCanvas)
+        {
+            var bounds = GetBounds();
+            if (bounds == null) return;
+            mainCanvas.Height = bounds.Value.Height + CANVAS_EXTRA;
+            mainCanvas.Width = bounds.Value.Width + CANVAS_EXTRA;
+
+            foreach (var link in Links)
+            {
+                link.Draw(mainCanvas);
+            }
+
+            foreach (var link in Links)
+            {
+                link.DrawLabel(mainCanvas);
+            }
+
+            foreach (var node in Nodes)
+            {
+                node.Draw(mainCanvas);
+            }
+        }
+
+        public Rect? GetBounds()
+        {
+            double minX, minY, maxX, maxY;
+
+            if (Nodes.Count == 0) return null;
+            minX = maxX = Nodes[0].Center.X;
+            minY = maxY = Nodes[0].Center.Y;
+
+            foreach (var node in Nodes)
+            {
+                if (node.Center.X < minX) minX = node.Center.X;
+                if (node.Center.X > maxX) maxX = node.Center.X;
+                if (node.Center.Y < minY) minY = node.Center.Y;
+                if (node.Center.Y > maxY) maxY = node.Center.Y;
+            }
+
+            return new Rect(minX, minY, maxX - minX, maxY - minY);
         }
     }
 }
