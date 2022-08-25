@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Point = System.Drawing.Point;
+using Point = System.Windows.Point;
 using Microsoft.Win32;
 
 namespace NetworkClasses
@@ -39,20 +39,21 @@ namespace NetworkClasses
         {
             try
             {
-                OpenFileDialog dialog = new OpenFileDialog();
+                //OpenFileDialog dialog = new OpenFileDialog();
 
-                dialog.DefaultExt = ".net";
-                dialog.Filter = "Network Files|*.net|All Files|*.*";
+                //dialog.DefaultExt = ".net";
+                //dialog.Filter = "Network Files|*.net|All Files|*.*";
 
-                // Display the dialog.
-                bool? result = dialog.ShowDialog();
+                //// Display the dialog.
+                //bool? result = dialog.ShowDialog();
 
-                if (result == true)
-                {
-                    // Open the network.
-                    MyNetwork = new Network(dialog.FileName);
+                //if (result == true)
+                //{
+                //    // Open the network.
+                //    MyNetwork = new Network(dialog.FileName);
 
-                }
+                //}
+                MyNetwork = BuildGridNetwork("testgrid.net", 400, 400, 5, 5);
             }
             catch (Exception ex)
             {
