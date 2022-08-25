@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NetworkClasses
 {
@@ -36,9 +37,12 @@ namespace NetworkClasses
             Links.Add(link);
         }
 
-        internal void Draw(Canvas mainCanvas)
+        public void Draw(Canvas mainCanvas)
         {
-            // throw new NotImplementedException();
+            const int RADIUS = 10;
+            Rect bounds = new Rect(Center.X - RADIUS, Center.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
+            mainCanvas.DrawEllipse(bounds, Brushes.White, Brushes.Black, 1);
+            mainCanvas.DrawString(Text, RADIUS, RADIUS, Center, 0,RADIUS, Brushes.Black);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NetworkClasses
 {
@@ -104,7 +105,7 @@ namespace NetworkClasses
             label.RenderTransform = trans;
             label.RenderTransformOrigin = new Point(0.5, 0.5);
 
-            canvas.Children.Add(label);            
+            canvas.Children.Add(label);
             return label;
         }
 
@@ -124,7 +125,7 @@ namespace NetworkClasses
 
         // Set fill and outline drawing properties.
         public static void SetShapeProperties(this Shape shape,
-            Brush fill, Brush stroke, double stroke_thickness)
+            Brush? fill, Brush stroke, double stroke_thickness)
         {
             shape.Fill = fill;
             shape.Stroke = stroke;
@@ -132,5 +133,24 @@ namespace NetworkClasses
         }
 
         #endregion Set Shape Properties
+
+        #region Point extensions
+        public static double GetAngleOfLine(this Point from, Point to)
+        {
+            double xDiff = (to.X - from.X);
+            double yDiff = to.Y - from.Y;
+            return (Math.Atan2(yDiff, xDiff) * (180 / Math.PI));
+        }
+
+        public static Point GetPointFromStart(this Point from, Point to, double percentage)
+        {
+            var point = new Point();
+            var offsetX = (to.X - from.X) * percentage;
+            var offsetY = (to.Y - from.Y) * percentage;
+            point.X = from.X + offsetX;
+            point.Y = from.Y + offsetY;
+            return point;
+        }
+        #endregion Point extensions
     }
 }
