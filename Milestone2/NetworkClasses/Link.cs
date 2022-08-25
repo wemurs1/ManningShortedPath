@@ -44,7 +44,7 @@ namespace NetworkClasses
             var angleDegrees = FromNode.Center.GetAngleOfLine(ToNode.Center);
             var labelPoint = FromNode.Center.GetPointFromStart(ToNode.Center, 0.33);
             Rect bounds = new Rect(labelPoint.X - RADIUS, labelPoint.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
-            mainCanvas.DrawEllipse(bounds, Brushes.White, Brushes.Black, 1);
+            mainCanvas.DrawEllipse(bounds, Brushes.White, Brushes.White, 1);
             mainCanvas.DrawString(Cost.ToString(), RADIUS, RADIUS, labelPoint, angleDegrees, RADIUS, Brushes.Black);
         }
     }
