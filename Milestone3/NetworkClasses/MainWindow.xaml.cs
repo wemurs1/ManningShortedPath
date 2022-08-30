@@ -39,21 +39,20 @@ namespace NetworkClasses
         {
             try
             {
-                //OpenFileDialog dialog = new OpenFileDialog();
+                OpenFileDialog dialog = new OpenFileDialog();
 
-                //dialog.DefaultExt = ".net";
-                //dialog.Filter = "Network Files|*.net|All Files|*.*";
+                dialog.DefaultExt = ".net";
+                dialog.Filter = "Network Files|*.net|All Files|*.*";
 
-                //// Display the dialog.
-                //bool? result = dialog.ShowDialog();
+                // Display the dialog.
+                bool? result = dialog.ShowDialog();
 
-                //if (result == true)
-                //{
-                //    // Open the network.
-                //    MyNetwork = new Network(dialog.FileName);
+                if (result == true)
+                {
+                    // Open the network.
+                    MyNetwork = new Network(dialog.FileName);
 
-                //}
-                MyNetwork = BuildGridNetwork("testgrid.net", 400, 400, 5, 5);
+                }
             }
             catch (Exception ex)
             {
@@ -65,6 +64,27 @@ namespace NetworkClasses
             // Display the network.
             DrawNetwork();
         }
+
+
+
+        private void makeTestNetworks_Click(object sender, RoutedEventArgs e)
+
+        {
+            BuildGridNetwork("3x3_grid.net", 300, 300, 3, 3);
+
+            BuildGridNetwork("4x4_grid.net", 300, 300, 4, 4);
+
+            BuildGridNetwork("5x8_grid.net", 600, 400, 5, 8);
+
+            BuildGridNetwork("6x10_grid.net", 600, 400, 6, 10);
+
+            BuildGridNetwork("10x15_grid.net", 600, 400, 10, 15);
+
+            BuildGridNetwork("20x30_grid.net", 600, 400, 20, 30);
+
+            MessageBox.Show("Done");
+        }
+
 
         private void DrawNetwork()
         {

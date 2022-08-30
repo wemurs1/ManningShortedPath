@@ -14,9 +14,8 @@ namespace NetworkClasses
     public class Network
     {
         public List<Node> Nodes { get; set; }
-        public List<Link> Links { get; set; } 
+        public List<Link> Links { get; set; }
         private const int CANVAS_EXTRA = 10;
-
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Network()
@@ -26,7 +25,7 @@ namespace NetworkClasses
         }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Network(string filename): base()
+        public Network(string filename) : base()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             ReadFromFile(filename);
@@ -108,7 +107,7 @@ namespace NetworkClasses
                         if (nodeIndex <= Nodes.Count + 1) fromNode = Nodes[nodeIndex];
                         nodeIndex = int.Parse(linkEntryArray[1]);
                         if (nodeIndex <= Nodes.Count) toNode = Nodes[nodeIndex];
-                        if (fromNode != null && toNode != null ) link = new Link(this,fromNode, toNode, int.Parse( linkEntryArray[2]));
+                        if (fromNode != null && toNode != null) link = new Link(this, fromNode, toNode, int.Parse(linkEntryArray[2]));
                     }
                 }
             }
@@ -146,20 +145,22 @@ namespace NetworkClasses
             if (bounds == null) return;
             mainCanvas.Height = bounds.Value.Height + CANVAS_EXTRA;
             mainCanvas.Width = bounds.Value.Width + CANVAS_EXTRA;
+            bool drawLabels = (Nodes?.Count < 100) ? true : false;
 
             foreach (var link in Links)
             {
                 link.Draw(mainCanvas);
             }
 
-            foreach (var link in Links)
-            {
-                link.DrawLabel(mainCanvas);
-            }
+            if (drawLabels)
+                foreach (var link in Links)
+                {
+                    link.DrawLabel(mainCanvas);
+                }
 
-            foreach (var node in Nodes)
+            foreach (var node in Nodes!)
             {
-                node.Draw(mainCanvas);
+                node.Draw(mainCanvas, drawLabels);
             }
         }
 

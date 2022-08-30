@@ -37,12 +37,14 @@ namespace NetworkClasses
             Links.Add(link);
         }
 
-        public void Draw(Canvas mainCanvas)
+        public void Draw(Canvas mainCanvas, bool drawLabels)
         {
-            const int RADIUS = 10;
-            Rect bounds = new Rect(Center.X - RADIUS, Center.Y - RADIUS, 2 * RADIUS, 2 * RADIUS);
+            const int LARGE_RADIUS = 10;
+            const int SMALL_RADIUS = 3;
+            var radius = drawLabels ? LARGE_RADIUS : SMALL_RADIUS;
+            Rect bounds = new Rect(Center.X - radius, Center.Y - radius, 2 * radius, 2 * radius);
             mainCanvas.DrawEllipse(bounds, Brushes.White, Brushes.Black, 1);
-            mainCanvas.DrawString(Text, RADIUS, RADIUS, Center, 0,RADIUS, Brushes.Black);
+            mainCanvas.DrawString(Text, radius, radius, Center, 0, radius, Brushes.Black);
         }
     }
 }
