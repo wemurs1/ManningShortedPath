@@ -45,17 +45,24 @@ namespace NetworkClasses
 
         private void SetLinkAppearance()
         {
-            if (MyLine == null) return;
-
-            if (IsInPath)
+            if (MyLine == null)
+            { 
+                return; 
+            }
+            else if (IsInPath)
             {
-                MyLine.Stroke = Brushes.Red;
+                MyLine.Stroke = Brushes.Lime;
                 MyLine.StrokeThickness = 6;
             }
             else if (IsInTree)
             {
-                MyLine.Stroke = Brushes.Lime;
+                MyLine.Stroke = Brushes.Red;
                 MyLine.StrokeThickness = 6;
+            }
+            else
+            {
+                MyLine.Stroke = Brushes.Black;
+                MyLine.StrokeThickness = 1;
             }
         }
 

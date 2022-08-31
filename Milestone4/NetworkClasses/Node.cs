@@ -44,9 +44,11 @@ namespace NetworkClasses
 
         private void SetNodeAppearance()
         {
-            if (MyEllipse == null) return;
-
-            if (IsStartNode)
+            if (MyEllipse == null)
+            {
+                return;
+            }
+            else if (IsStartNode)
             {
                 MyEllipse.Fill = Brushes.Pink;
                 MyEllipse.Stroke = Brushes.Red;

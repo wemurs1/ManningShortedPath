@@ -200,8 +200,7 @@ namespace NetworkClasses
             Node? oldNode = null;
             bool left = false;
             bool right = false;
-            if (src == null) return;
-            if (node == null) return;
+            if (src == null || node == null) return;
 
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -218,18 +217,18 @@ namespace NetworkClasses
             {
                 foreach (var link in oldNode.Links)
                 {
-                    link.IsInTree = false;
-                    link.IsInPath = false;
+                    if (left) link.IsInPath = false;
+                    else if (right) link.IsInTree = false;
                 }
 
-                oldNode.IsEndNode = false;
-                oldNode.IsEndNode = false;
+                if (left) oldNode.IsStartNode = false;
+                else if (right) oldNode.IsEndNode = false;
             }
 
             foreach (var link in node.Links)
             {
-                link.IsInPath = true;
-                link.IsInTree = true;
+                if (left) link.IsInPath = true;
+                else if (right) link.IsInTree = true;
             }
 
             if (left)
