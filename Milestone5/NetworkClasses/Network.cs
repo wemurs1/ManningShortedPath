@@ -21,6 +21,30 @@ namespace NetworkClasses
         public Node? EndNode { get; set; }
         private const int CANVAS_EXTRA = 10;
 
+        internal enum AlgorithmTypes
+        {
+            LabelSetting,
+            LabelCorrecting,
+        }
+
+        private AlgorithmTypes algorithmType = AlgorithmTypes.LabelSetting;
+        internal AlgorithmTypes AlgorithmType
+        {
+            get
+            {
+                return algorithmType;
+            }
+            set
+            {
+                // Save the new value.
+                algorithmType = value;
+
+                // Use the newly selected algorithm to
+                // check for a tree and path.
+                CheckForPath();
+            }
+        }
+
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public Network()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -37,6 +61,8 @@ namespace NetworkClasses
 
         public void Clear()
         {
+            StartNode = null;
+            EndNode = null;
             Nodes = new List<Node>();
             Links = new List<Link>();
         }
@@ -196,51 +222,32 @@ namespace NetworkClasses
 
         private void NodeClicked(Node? node, MouseButtonEventArgs e)
         {
-            Control? src = e.Source as Control;
-            Node? oldNode = null;
-            bool left = false;
-            bool right = false;
-            if (src == null || node == null) return;
+            if (node == null) return;
 
+            // Update the start/end node.
             if (e.ChangedButton == MouseButton.Left)
             {
-                left = true;
-                oldNode = StartNode;
-            }
-            else if (e.ChangedButton == MouseButton.Right)
-            {
-                right = true;
-                oldNode = EndNode;
-            }
+                // Update the start node.
+                // Deselect the previous start node.
+                if (StartNode != null) StartNode.IsStartNode = false;
 
-            if (oldNode != null)
-            {
-                foreach (var link in oldNode.Links)
-                {
-                    if (left) link.IsInPath = false;
-                    else if (right) link.IsInTree = false;
-                }
-
-                if (left) oldNode.IsStartNode = false;
-                else if (right) oldNode.IsEndNode = false;
-            }
-
-            foreach (var link in node.Links)
-            {
-                if (left) link.IsInPath = true;
-                else if (right) link.IsInTree = true;
-            }
-
-            if (left)
-            {
-                node.IsStartNode = true;
+                // Select the new start node.
                 StartNode = node;
+                StartNode.IsStartNode = true;
             }
-            else if (right)
+            else
             {
-                node.IsEndNode = true;
+                // Update the end node.
+                // Deselect the previous end node.
+                if (EndNode != null) EndNode.IsEndNode = false;
+
+                // Select the new end node.
                 EndNode = node;
+                EndNode.IsEndNode = true;
             }
+
+            // Check for shortest paths.
+            CheckForPath();
         }
 
         internal void label_MouseDown(object sender, MouseButtonEventArgs e)
@@ -248,6 +255,140 @@ namespace NetworkClasses
             var label = sender as Label;
             var node = label!.Tag as Node;
             NodeClicked(node, e);
+        }
+
+        private void CheckForPath()
+        {
+            if (StartNode != null)
+            {
+                switch (AlgorithmType)
+                {
+                    case AlgorithmTypes.LabelSetting:
+                        FindPathTreeLabelSetting();
+                        break;
+                    case AlgorithmTypes.LabelCorrecting:
+                        FindPathTreeLabelCorrecting();
+                        break;
+                    default:
+                        break;
+                }
+
+                if (EndNode != null)
+                {
+                    FindPath();
+                }
+            }
+        }
+
+        private void FindPathTreeLabelSetting()
+        {
+            if (StartNode == null) return;
+
+            // Reset all nodes and links.
+
+            // Place the start node on the candidate list.
+            StartNode.TotalCost = 0;
+
+            List<Node> candidateList = new List<Node>();
+
+            candidateList.Add(StartNode);
+
+            // Process the candidate list until it is empty.
+            // See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
+
+            int numPops = 0;
+
+            int numChecks = 0;
+
+            while (candidateList.Count > 0)
+            {
+                // Find the candidate with the smallest totalCost.
+
+                // Process the best candidate.
+
+                // Check this node's links.
+                foreach (Link link in bestCandidate.Links)
+                {
+                    // Get the node at the other end of this link.
+
+                    // See if we can improve the other node's totalCost.
+                    double newTotalCost = 1.23456789;
+                    if (newTotalCost < otherNode.TotalCost)
+                    {
+
+                        // Add the other node to the candidate list.
+                    }
+                }
+            }
+
+            // Print stats.
+            Console.WriteLine(string.Format("Checks: {0}", numChecks));
+            Console.WriteLine(string.Format("Pops:   {0}", numPops));
+
+            // Set IsInTree for links in the shortest path tree.
+        }
+
+        private void FindPathTreeLabelCorrecting()
+        {
+            if (StartNode == null) return;
+
+            // Reset all nodes and links.
+
+            // Place the start node on the candidate list.
+            StartNode.TotalCost = 0;
+
+            List<Node> candidateList = new List<Node>();
+
+            candidateList.Add(StartNode);
+
+            // Process the candidate list until it is empty.
+
+            // See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
+
+            int numPops = 0;
+
+            while (candidateList.Count > 0)
+
+            {
+
+                // Process the first item in the candidate list.
+
+                // Check this node's links.
+                foreach (Link link in bestCandidate.Links)
+                {
+                    // Get the node at the other end of this link.
+
+                    // See if we can improve the other node's total cost.
+                    double newTotalCost = 1.23456789;
+
+                    if (newTotalCost < otherNode.TotalCost)
+                    {
+
+                        // Add the other node to the candidate list.
+
+                    }
+                }
+            }
+
+            // Print stats.
+            Console.WriteLine(string.Format("Pops: {0}", numPops));
+
+            // Set IsInTree for links in the shortest path tree.
+            foreach (Node node in Nodes)
+            {
+                if (node.ShortestPathLink != null) node.ShortestPathLink.IsInTree = true;
+            }
+        }
+
+        private void FindPath()
+        {
+            if (EndNode == null) return;
+
+            // If there is no path between the start and end nodes, return
+            if (EndNode.ShortestPathLink == null) return;
+
+            // Follow the path backwards from the end node to the start node.
+
         }
     }
 }

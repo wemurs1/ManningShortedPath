@@ -28,7 +28,13 @@
 
         </Menu>
 
-
+        <ToolBar DockPanel.Dock="Top">
+            <Label Content="Algorithm:"/>
+            <ComboBox Name="algorithmComboBox" SelectedIndex="0" Width="120" SelectionChanged="algorithmComboBox_SelectionChanged">
+                <ComboBoxItem Content="Label Setting" />
+                <ComboBoxItem Content="Label Correcting" />
+            </ComboBox>
+        </ToolBar>
 
         <Border BorderBrush="Black" BorderThickness="1" Margin="3">
 

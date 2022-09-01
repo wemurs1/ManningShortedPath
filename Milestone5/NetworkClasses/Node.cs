@@ -19,6 +19,7 @@ namespace NetworkClasses
         public List<Link> Links { get; set; }
         public Ellipse? MyEllipse { get; set; }
         public Label? MyLabel { get; set; }
+        public Link? ShortestPathLink { get; set; }
         private bool isStartNode;
 
         public bool IsStartNode
@@ -41,6 +42,8 @@ namespace NetworkClasses
                 SetNodeAppearance();
             }
         }
+
+        public int TotalCost { get; internal set; }
 
         private void SetNodeAppearance()
         {

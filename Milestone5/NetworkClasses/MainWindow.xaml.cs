@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Point = System.Windows.Point;
 using Microsoft.Win32;
+using static NetworkClasses.Network;
 
 namespace NetworkClasses
 {
@@ -83,6 +84,23 @@ namespace NetworkClasses
             BuildGridNetwork("20x30_grid.net", 600, 400, 20, 30);
 
             MessageBox.Show("Done");
+        }
+
+        private void algorithmComboBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            var selectedItem = comboBox!.SelectedValue as ComboBoxItem;
+            switch (selectedItem!.Content)
+            {
+                case "Label Setting":
+                    MyNetwork.AlgorithmType = AlgorithmTypes.LabelSetting;
+                    break;
+                case "Label Correcting":
+                    MyNetwork.AlgorithmType = AlgorithmTypes.LabelCorrecting;
+                    break;
+                default:
+                    throw new ArgumentException($"Unknown algorithm value: {selectedItem.Content}");
+            }
         }
 
 
