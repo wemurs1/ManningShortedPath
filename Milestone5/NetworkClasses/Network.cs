@@ -307,13 +307,13 @@ namespace NetworkClasses
                 // Process the best candidate.
 
                 // Check this node's links.
-                foreach (Link link in bestCandidate.Links)
+                foreach (Link link in Links) //bestCandidate.Links)
                 {
                     // Get the node at the other end of this link.
 
                     // See if we can improve the other node's totalCost.
                     double newTotalCost = 1.23456789;
-                    if (newTotalCost < otherNode.TotalCost)
+                    if (newTotalCost < link.Cost)//otherNode.TotalCost)
                     {
 
                         // Add the other node to the candidate list.
@@ -354,14 +354,14 @@ namespace NetworkClasses
                 // Process the first item in the candidate list.
 
                 // Check this node's links.
-                foreach (Link link in bestCandidate.Links)
+                foreach (Link link in Links)//bestCandidate.Links)
                 {
                     // Get the node at the other end of this link.
 
                     // See if we can improve the other node's total cost.
                     double newTotalCost = 1.23456789;
 
-                    if (newTotalCost < otherNode.TotalCost)
+                    if (newTotalCost < link.Cost) //otherNode.TotalCost)
                     {
 
                         // Add the other node to the candidate list.

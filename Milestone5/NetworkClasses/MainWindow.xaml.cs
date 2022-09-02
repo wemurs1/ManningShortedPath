@@ -103,6 +103,11 @@ namespace NetworkClasses
             }
         }
 
+        private void clearNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            MyNetwork.Clear();
+            DrawNetwork();
+        }
 
         private void DrawNetwork()
         {
