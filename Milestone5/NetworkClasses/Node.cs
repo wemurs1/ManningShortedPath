@@ -20,6 +20,8 @@ namespace NetworkClasses
         public Ellipse? MyEllipse { get; set; }
         public Label? MyLabel { get; set; }
         public Link? ShortestPathLink { get; set; }
+        public bool IsInPath { get; set; }
+        public bool Visited { get; set; }
         private bool isStartNode;
 
         public bool IsStartNode
@@ -43,7 +45,7 @@ namespace NetworkClasses
             }
         }
 
-        public int TotalCost { get; internal set; }
+        public double TotalCost { get; internal set; }
 
         private void SetNodeAppearance()
         {
@@ -81,6 +83,9 @@ namespace NetworkClasses
             network.AddNode(this);
             IsEndNode = false;
             IsStartNode = false;
+            IsInPath = false;
+            TotalCost = 0;
+            Visited = false;
         }
 
         public override string ToString()

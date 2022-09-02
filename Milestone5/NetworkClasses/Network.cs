@@ -280,92 +280,54 @@ namespace NetworkClasses
             }
         }
 
-        private void FindPathTreeLabelSetting()
-        {
-            if (StartNode == null) return;
-
-            // Reset all nodes and links.
-
-            // Place the start node on the candidate list.
-            StartNode.TotalCost = 0;
-
-            List<Node> candidateList = new List<Node>();
-
-            candidateList.Add(StartNode);
-
-            // Process the candidate list until it is empty.
-            // See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
-
-            int numPops = 0;
-
-            int numChecks = 0;
-
-            while (candidateList.Count > 0)
-            {
-                // Find the candidate with the smallest totalCost.
-
-                // Process the best candidate.
-
-                // Check this node's links.
-                foreach (Link link in Links) //bestCandidate.Links)
-                {
-                    // Get the node at the other end of this link.
-
-                    // See if we can improve the other node's totalCost.
-                    double newTotalCost = 1.23456789;
-                    if (newTotalCost < link.Cost)//otherNode.TotalCost)
-                    {
-
-                        // Add the other node to the candidate list.
-                    }
-                }
-            }
-
-            // Print stats.
-            Console.WriteLine(string.Format("Checks: {0}", numChecks));
-            Console.WriteLine(string.Format("Pops:   {0}", numPops));
-
-            // Set IsInTree for links in the shortest path tree.
-        }
-
+        // Build a shortest path tree rooted at the start node.
         private void FindPathTreeLabelCorrecting()
         {
             if (StartNode == null) return;
 
             // Reset all nodes and links.
+            foreach (Node node in Nodes)
+            {
+                node.TotalCost = double.PositiveInfinity;
+                node.IsInPath = false;
+                node.ShortestPathLink = null;
+            }
+            foreach (Link link in Links)
+            {
+                link.IsInTree = false;
+                link.IsInPath = false;
+            }
 
             // Place the start node on the candidate list.
             StartNode.TotalCost = 0;
-
             List<Node> candidateList = new List<Node>();
-
             candidateList.Add(StartNode);
 
             // Process the candidate list until it is empty.
-
             // See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
-
             int numPops = 0;
-
             while (candidateList.Count > 0)
-
             {
-
                 // Process the first item in the candidate list.
+                Node bestCandidate = candidateList[0];
+                candidateList.RemoveAt(0);
+                numPops++;
 
                 // Check this node's links.
-                foreach (Link link in Links)//bestCandidate.Links)
+                foreach (Link link in bestCandidate.Links)
                 {
                     // Get the node at the other end of this link.
+                    Node otherNode = link.ToNode;
 
                     // See if we can improve the other node's total cost.
-                    double newTotalCost = 1.23456789;
-
-                    if (newTotalCost < link.Cost) //otherNode.TotalCost)
+                    double newTotalCost = bestCandidate.TotalCost + link.Cost;
+                    if (newTotalCost < otherNode.TotalCost)
                     {
+                        otherNode.TotalCost = newTotalCost;
+                        otherNode.ShortestPathLink = link;
 
                         // Add the other node to the candidate list.
-
+                        candidateList.Add(otherNode);
                     }
                 }
             }
@@ -376,19 +338,110 @@ namespace NetworkClasses
             // Set IsInTree for links in the shortest path tree.
             foreach (Node node in Nodes)
             {
-                if (node.ShortestPathLink != null) node.ShortestPathLink.IsInTree = true;
+                if (node.ShortestPathLink != null)
+                    node.ShortestPathLink.IsInTree = true;
             }
         }
 
+        // Build a shortest path tree rooted at the start node.
+        private void FindPathTreeLabelSetting()
+        {
+            if (StartNode == null) return;
+
+            // Reset all nodes and links.
+            foreach (Node node in Nodes)
+            {
+                node.TotalCost = double.PositiveInfinity;
+                node.IsInPath = false;
+                node.ShortestPathLink = null;
+                node.Visited = false;
+            }
+            foreach (Link link in Links)
+            {
+                link.IsInTree = false;
+                link.IsInPath = false;
+            }
+
+            // Place the start node on the candidate list.
+            StartNode.TotalCost = 0;
+            List<Node> candidateList = new List<Node>();
+            candidateList.Add(StartNode);
+
+            // Process the candidate list until it is empty.
+            // See https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
+            int numPops = 0;
+            int numChecks = 0;
+            while (candidateList.Count > 0)
+            {
+                // Find the candidate with the smallest totalCost.
+                double bestTotalCost = double.PositiveInfinity;
+                int bestIndex = -1;
+                for (int index = 0; index < candidateList.Count; index++)
+                {
+                    numChecks++;
+                    if (bestTotalCost > candidateList[index].TotalCost)
+                    {
+                        bestTotalCost = candidateList[index].TotalCost;
+                        bestIndex = index;
+                    }
+                }
+
+                // Process the best candidate.
+                Node bestCandidate = candidateList[bestIndex];
+                candidateList.RemoveAt(bestIndex);
+                bestCandidate.Visited = true;
+                numPops++;
+
+                // Check this node's links.
+                foreach (Link link in bestCandidate.Links)
+                {
+                    // Get the node at the other end of this link.
+                    Node otherNode = link.ToNode;
+                    if (otherNode.Visited) continue;
+
+                    // See if we can improve the other node's totalCost.
+                    double newTotalCost = bestCandidate.TotalCost + link.Cost;
+                    if (newTotalCost < otherNode.TotalCost)
+                    {
+                        otherNode.TotalCost = newTotalCost;
+                        otherNode.ShortestPathLink = link;
+
+                        // Add the other node to the candidate list.
+                        candidateList.Add(otherNode);
+                    }
+                }
+            }
+
+            // Print stats.
+            Console.WriteLine(string.Format("Checks: {0}", numChecks));
+            Console.WriteLine(string.Format("Pops:   {0}", numPops));
+
+            // Set IsInTree for links in the shortest path tree.
+            foreach (Node node in Nodes)
+            {
+                if (node.ShortestPathLink != null)
+                    node.ShortestPathLink.IsInTree = true;
+            }
+        }
         private void FindPath()
         {
-            if (EndNode == null) return;
+            if (StartNode == null || EndNode == null) return;
 
-            // If there is no path between the start and end nodes, return
+            // If there is no path between the start and end nodes, return.
             if (EndNode.ShortestPathLink == null) return;
 
             // Follow the path backwards from the end node to the start node.
-
+            Node node = EndNode;
+            while (node != StartNode && node != null)
+            {
+                // Mark this node's shortest path link.
+                if (node.ShortestPathLink != null)
+                {
+                    node.ShortestPathLink.IsInPath = true;
+                    node = node.ShortestPathLink.FromNode;
+                }
+            }
+            Console.WriteLine(string.Format("Total cost: {0}", EndNode.TotalCost));
         }
     }
 }
